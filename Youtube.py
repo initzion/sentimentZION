@@ -1,4 +1,4 @@
-from apiclient.discovery import build 
+from apiclient.discovery import build
 from rfc3339 import rfc3339
 # import datetime as dt
 import pandas as pd
@@ -9,14 +9,14 @@ global yt_vid_comments
 yt_vid_comments = []
 
 
-DEVELOPER_KEY = "AIzaSyDlYMAr75KG0XvYaaXDGMoN-rt1Kl2B1QU" 
+DEVELOPER_KEY = "AIzaSyAPTz2p2gomu_DNpnkc2pIzn57BMmJXC2o" 
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 
 YOUTUBE_API_VERSION = "v3"
 
 
-youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,  developerKey = DEVELOPER_KEY) 
+youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,  developerKey = DEVELOPER_KEY)
 def search_vidid(startdate,enddate,query):
 
 
@@ -49,7 +49,7 @@ def ct_yt(vid):
         comlist.append(A)
     yt_vid_comments.extend(comlist)
     #return comlist
-    
+
 def all_cmt(videoid_list):
     for id in videoid_list:
         try:

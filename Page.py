@@ -137,6 +137,7 @@ app = dash.Dash(__name__)
 app.index_string = html_layout
 
 
+
 tabs_styles = {
     'height': '44px'
 }
@@ -152,73 +153,85 @@ tab_selected_style = {
     'fontWeight': 'bold'
 }
 
+
+
+
+
+
+
+
+
 app.layout = html.Div([
-    dcc.Tabs(id="tabs-styled-with-inline", value='tab-2', children=[
-        dcc.Tab(label='Overview', value='tab-1', style=tab_style, selected_style=tab_selected_style),
-        dcc.Tab(label='Youtube', value='tab-2', style=tab_style, selected_style=tab_selected_style),
-        dcc.Tab(label='Twitter', value='tab-3', style=tab_style, selected_style=tab_selected_style),
-        dcc.Tab(label='Reddit', value='tab-4', style=tab_style, selected_style=tab_selected_style),
-    ], style=tabs_styles),
-    html.Div(id='tabs-content-inline')
+    dcc.Tabs([
+        dcc.Tab(label='YouTube', value='tab-1', style=tab_style, selected_style=tab_selected_style, children=[
+            html.Div([
+                #html.Div(html.H1(children="Team Zion")),
+                html.P(""),
+                html.H3("Enter the term you want to analyse"),
+                html.Div([
+                    dcc.Input(
+                        id = "query-input",
+                        placeholder = "Enter the query you want to search",
+                        type = "text",
+                        value = "Donald Trump"
+                    ),
+
+                   html.Button('Submit', id='submit-val', n_clicks=0),
+                ]),
+                html.Div(
+                    dcc.Graph(id="line-graph",)
+                    )
+
+            ])
+        ]),
+        dcc.Tab(label='Twitter', value='tab-2', style=tab_style, selected_style=tab_selected_style, children=[
+            dcc.Graph(
+                figure={
+                    'data': [
+                        {'x': [1, 2, 3], 'y': [1, 4, 1],
+                            'type': 'bar', 'name': 'SF'},
+                        {'x': [1, 2, 3], 'y': [1, 2, 3],
+                         'type': 'bar', 'name': u'Montréal'},
+                    ]
+                }
+            )
+        ]),
+        dcc.Tab(label='Reddit', value='tab-3', style=tab_style, selected_style=tab_selected_style, children=[
+            dcc.Graph(
+                figure={
+                    'data': [
+                        {'x': [1, 2, 3], 'y': [2, 4, 3],
+                            'type': 'bar', 'name': 'SF'},
+                        {'x': [1, 2, 3], 'y': [5, 4, 3],
+                         'type': 'bar', 'name': u'Montréal'},
+                    ]
+                }
+            )
+        ]),
+    ])
 ])
 
-@app.callback(Output('tabs-content-inline', 'children'),
-              [Input('tabs-styled-with-inline', 'value')])
-def render_content(tab):
-    if tab == 'tab-1':
-        return html.Div([
-            html.H3('Tab content 1')
-        ])
-    elif tab == 'tab-2':
-        return html.Div([
-            #html.Div(html.H1(children="Team Zion")),
-            html.P(""),
-            html.H3("Enter the term you want to analyse"),
-            html.Div([
-                dcc.Input(
-                    id = "query-input",
-                    placeholder = "Enter the query you want to search",
-                    type = "text",
-                    value = "Donald Trump"
-                ),
+@app.callback(Output("line-graph","figure"),
+    [Input('submit-val', 'n_clicks')],
+    [State("query-input","value")])
+def update_fig(n_clicks,input_value):
+    videoid_list=search_vidid(begin_date, end_date, input_value)
+    ansdf=all_cmt(videoid_list)
+    ansdf = analyse_sentiment(ansdf,"comments")
+    ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
+    ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
 
-               html.Button('Submit', id='submit-val', n_clicks=0),
-            ]),
-            html.Div(
-                dcc.Graph(id="line-graph",)
-                )
-
-        ])
-        @app.callback(Output("line-graph","figure"),
-            [Input('submit-val', 'n_clicks')],
-            [State("query-input","value")])
-        def update_fig(n_clicks,input_value):
-            videoid_list=search_vidid(begin_date, end_date, input_value)
-            ansdf=all_cmt(videoid_list)
-            ansdf = analyse_sentiment(ansdf,"comments")
-            ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
-            ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
-
-            data=[]
-            trace_close = go.Scatter(x = list(ansdf.Date),
-                                 y=list(ansdf.sentiment),
-                                 name="Close",
-                                 line=dict(color="#ff3333"))
-            data.append(trace_close)
-            layout = {"title": input_value }
-            return{
-                "data":data,
-                "layout":layout
-                }
-    elif tab == 'tab-3':
-        return html.Div([
-            html.H3('Tab content 3')
-        ])
-    elif tab == 'tab-4':
-        return html.Div([
-            html.H3('Tab content 4')
-        ])
-
+    data=[]
+    trace_close = go.Scatter(x = list(ansdf.index),
+                         y=list(ansdf.sentiment),
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data.append(trace_close)
+    layout = {"title": input_value }
+    return{
+        "data":data,
+        "layout":layout
+        }
 
 
 
