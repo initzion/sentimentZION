@@ -7,9 +7,9 @@ import plotly.graph_objs as go
 from layout import html_layout
 
 
-from redditScraping import top_posts
-from redditScraping import to_id_list
-from redditScraping import mine_comments
+from Reddit import top_posts
+from Reddit import to_id_list
+from Reddit import mine_comments
 
 
 import datetime as dt
