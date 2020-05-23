@@ -9,7 +9,7 @@ from layout import html_layout
 import datetime as dt
 import pandas as pd
 
-
+from twitterprocess import top_results
 
 global yt_vid_comments
 yt_vid_comments = []
@@ -138,45 +138,28 @@ app = dash.Dash(__name__)
 
 
 
-def createndf(df):
-    f_list=df["sentiment"].to_list()
-    pol=list()
-    p=0
-    n=0
-    nu=0
-    for l in f_list:
-        if(l>0):
-            p+=1
-        elif(l<0):
-            n+=1
-        else:
-            nu+=1
-        #print (pol)
-    pol.append(p)
-    pol.append(n)
-    pol.append(nu)
-    ndf=pd.DataFrame()
-    pl=["positive","negative","neutral"]
-    ndf['label']=pl
-    ndf['values']=pol
-    return ndf
-
 
 app.index_string = html_layout
 
 tabs_styles = {
-    'height': '44px'
+    'height': '44px',
+
 }
 tab_style = {
-    'borderBottom': '1px solid #d6d6d6',
+    'border': '3px solid #111111',
     'padding': '6px',
-    'fontWeight': 'bold'
+    'fontWeight': 'bold',
+    'background':'#111111'
 }
 
 tab_selected_style = {
-    'borderTop': '3px solid blue',
+    'borderTop': '3px solid #000000',
+    'borderBottom': '3px solid #282828',
+    'color': '#ffffff',
     'padding': '6px',
-    'fontWeight': 'bold'
+    'fontWeight': 'bold',
+    'background':'#282828'
+
 }
 
 
@@ -203,20 +186,24 @@ app.layout = html.Div([
                         id = "yquery-input",
                         placeholder = "Enter the query you want to search",
                         type = "text",
-                        value = "Donald Trump"
+                        value = "Donald Trump",
+                        style={"margin-right": "15px"}
                     ),
-
                    html.Button('Submit', id='ysubmit-val', n_clicks=0),
+                   html.P(""),
                 ]),
                 html.Div(
-                    dcc.Graph(id="y-graph1",)
+                    dcc.Graph(id="y-graph1", config={'displayModeBar': False})
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="y-graph2",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="y-graph3",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="y-graph4",)
                     )
@@ -233,20 +220,25 @@ app.layout = html.Div([
                         id = "tquery-input",
                         placeholder = "Enter the query you want to search",
                         type = "text",
-                        value = "Donald Trump"
+                        value = "Donald Trump",
+                        style={"margin-right": "15px"}
                     ),
 
                    html.Button('Submit', id='tsubmit-val', n_clicks=0),
+                   html.P(""),
                 ]),
                 html.Div(
                     dcc.Graph(id="t-graph1",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="t-graph2",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="t-graph3",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="t-graph4",)
                     )
@@ -263,20 +255,25 @@ app.layout = html.Div([
                         id = "rquery-input",
                         placeholder = "Enter the query you want to search",
                         type = "text",
-                        value = "Donald Trump"
+                        value = "Covid19",
+                        style={"margin-right": "15px"}
                     ),
 
                    html.Button('Submit', id='rsubmit-val', n_clicks=0),
+                   html.P(""),
                 ]),
                 html.Div(
-                    dcc.Graph(id="r-graph1",)
+                    dcc.Graph(id="r-graph1"),
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="r-graph2",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="r-graph3",)
                     ),
+                html.P(""),
                 html.Div(
                     dcc.Graph(id="r-graph4",)
                     )
@@ -289,7 +286,8 @@ app.layout = html.Div([
 @app.callback(
     [dash.dependencies.Output("y-graph1","figure"),
     dash.dependencies.Output("y-graph2","figure"),
-    dash.dependencies.Output("y-graph3","figure")],
+    dash.dependencies.Output("y-graph3","figure"),
+    dash.dependencies.Output("y-graph4","figure")],
     [dash.dependencies.Input('ysubmit-val', 'n_clicks')],
     [dash.dependencies.State("yquery-input","value")])
 def update_fig(n_clicks,input_value):
@@ -298,38 +296,226 @@ def update_fig(n_clicks,input_value):
     ansdf = analyse_sentiment(ansdf,"comments")
     ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
     ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
-<<<<<<< HEAD
-    ndf=createndf(ansdf)
-=======
     ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].sum()
->>>>>>> 18164fee23023b1e5189ad67cbb61b4d0031b6bf
     #yaha tkk toh bss dataframe creation hai jo tere paas hai
     data=[]
     trace_close = go.Scatter(x = list(ansdf2.Date),
                          y=list(ansdf2.sentiment),
-                         name="Close",
-                         line=dict(color="#ff3333"))
-    data.append(trace_close)
-    figure = go.Figure(data)
 
-    data3=[]
-    trace_close3 = go.Scatter(x = list(ansdf.CommentPublishDate),
+                         name="Close"
+                         )
+    data.append(trace_close)
+    figure1 = go.Figure(data)
+    figure1.update_layout(
+    title="Date-Wise Cumulative Sentiment Score Line Plot",
+    xaxis_title="Date",
+    yaxis_title="Cumulative Score",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Scatter(x = list(ansdf.CommentPublishDate),
                          y=list(ansdf.sentiment),
                          mode='markers',
                          name='markers',
                          marker_color=ansdf['sentiment']
                          )
-    data3.append(trace_close3)
-    figure3 = go.Figure(data3)
 
-    data4=[]
-    trace_close4 = go.Pie(labels = list(ansdf.roundoff),
-                         name="Pie"
+    data.append(trace_close)
+    figure2 = go.Figure(data)
+    figure2.update_layout(
+    title="Date-Wise Sentiment Score Scatter Plot [negative(-1) to positive(+1)]",
+    xaxis_title="Date",
+    yaxis_title="(-ve) Sentiment Score (+ve)",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Box(x = list(ansdf.Date),
+                         y=list(ansdf.sentiment),
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data.append(trace_close)
+    figure3 = go.Figure(data)
+    figure3.update_layout(
+    title="Date-Wise Sentiment Score Box Plot [negative(-1) to positive(+1)]",
+    xaxis_title="Date",
+    yaxis_title="(-ve) Sentiment Score (+ve)",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Pie(labels=list(ansdf.roundoff),
+                         name="Close"
                          )
-    data4.append(trace_close4)
-    figure4 = go.Figure(data4)
+    data.append(trace_close)
+    figure4 = go.Figure(data)
+    figure4.update_layout(
+    title="Pie-Chart",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
 
-    return figure, figure3, figure4
+    return figure1, figure2, figure3, figure4
+
+@app.callback(
+    [dash.dependencies.Output("t-graph1","figure"),
+    dash.dependencies.Output("t-graph2","figure"),
+    dash.dependencies.Output("t-graph3","figure"),
+    dash.dependencies.Output("t-graph4","figure")],
+    [dash.dependencies.Input('tsubmit-val', 'n_clicks')],
+    [dash.dependencies.State("tquery-input","value")])
+def update_fig(n_clicks,input_value):
+    andf = top_results(input_value)
+    andf = analyse_sentiment(andf,"text")
+    andf['Date'] = andf.apply(lambda row: str(row.timestamp).split(" ", 1)[0], axis = 1)
+    andf['RoundPolarity'] = round(andf['sentiment'],1)
+    andf2 = andf.groupby('Date', as_index=False)[['sentiment']].sum()
+    # ansdf3 = ansdf.groupby('RoundPolarity', as_index=False)[['Likes']].sum()
+
+    data=[]
+    trace_close = go.Scatter(x = list(andf2.Date),
+                         y=list(andf2.sentiment),
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data.append(trace_close)
+    figure1 = go.Figure(data)
+    figure1.update_layout(
+    title="Date-Wise Cumulative Sentiment Score Line Plot",
+    xaxis_title="Date",
+    yaxis_title="Cumulative Score",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Scatter(x = list(andf.timestamp),
+                          y=list(andf.sentiment),
+                          mode='markers',
+                          name="markers",
+                          marker_color=andf['sentiment'])
+    data.append(trace_close)
+    figure2 = go.Figure(data)
+    figure2.update_layout(
+    title="Date-Wise Sentiment Score Scatter Plot [negative(-1) to positive(+1)]",
+    xaxis_title="Date",
+    yaxis_title="(-ve) Sentiment Score (+ve)",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Box(x = list(andf.Date),
+                         y=list(andf.sentiment),
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data.append(trace_close)
+    figure3 = go.Figure(data)
+    figure3.update_layout(
+    title="Date-Wise Sentiment Score Box Plot [negative(-1) to positive(+1)]",
+    xaxis_title="Date",
+    yaxis_title="(-ve) Sentiment Score (+ve)",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Pie(labels=list(andf.roundoff),
+                         name="Close"
+                         )
+    data.append(trace_close)
+    figure4 = go.Figure(data)
+    figure4.update_layout(
+    title="Pie-Chart",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+
+    return figure1, figure2, figure3, figure4
+
+
+@app.callback(
+    [dash.dependencies.Output("r-graph1","figure"),
+    dash.dependencies.Output("r-graph2","figure"),
+    dash.dependencies.Output("r-graph3","figure"),
+    dash.dependencies.Output("r-graph4","figure")],
+    [dash.dependencies.Input('rsubmit-val', 'n_clicks')],
+    [dash.dependencies.State("rquery-input","value")])
+def update_fig(n_clicks,input_value):
+    input_value = input_value.replace(" ", "")
+    df1=top_posts(input_value)
+    list1=to_id_list(df1)
+    comment=mine_comments(list1)
+    comment=analyse_sentiment(comment,"comments")
+    comment['Date'] = comment.apply(lambda row: str(row.c_date).split(" ", 1)[0], axis = 1)
+    comment2 = comment.groupby('Date', as_index=False)[['sentiment']].sum()
+    data=[]
+    trace_close = go.Scatter(x = list(comment2.Date),
+                         y=list(comment2.sentiment),
+                         mode='lines',
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data.append(trace_close)
+    figure1 = go.Figure(data)
+    figure1.update_layout(
+    title="Date-Wise Cumulative Sentiment Score Line Plot",
+    xaxis_title="Date",
+    yaxis_title="Cumulative Score",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Scatter(x = list(comment.c_date),
+                          y=list(comment.sentiment),
+                          mode='markers',
+                          name="markers",
+                          marker_color=comment['sentiment'])
+    data.append(trace_close)
+    figure2 = go.Figure(data)
+    figure2.update_layout(
+    title="Date-Wise Sentiment Score Scatter Plot [negative(-1) to positive(+1)]",
+    xaxis_title="Date",
+    yaxis_title="(-ve) Sentiment Score (+ve)",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Box(x = list(comment.Date),
+                         y=list(comment.sentiment),
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data.append(trace_close)
+    figure3 = go.Figure(data)
+    figure3.update_layout(
+    title="Date-Wise Sentiment Score Box Plot [negative(-1) to positive(+1)]",
+    xaxis_title="Date",
+    yaxis_title="(-ve) Sentiment Score (+ve)",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+    data=[]
+    trace_close = go.Pie(labels=list(comment.roundoff),
+                         name="Close"
+                         )
+    data.append(trace_close)
+    figure4 = go.Figure(data)
+    figure4.update_layout(
+    title="Pie-Chart",
+    template='plotly_dark',
+    plot_bgcolor= 'rgba(0, 0, 0, 0)'
+    )
+
+
+    return figure1, figure2, figure3, figure4
+
+
 
 
 

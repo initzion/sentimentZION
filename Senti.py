@@ -3,32 +3,20 @@ from textblob import TextBlob
 
 def analyse_sentiment(df , term):
     f_list=df[term].to_list()
-    for l in f_list:
-        if(l=="[removed]" or l=="[deleted]"):
-            f_list.append(0)
-
     pol=list()
     for l in f_list:
-        if(l!=0):
-            analysis=TextBlob(l).sentiment
-            t=analysis.polarity
-            pol.append(t)
-        else:
-            pol.append(0)
-        #print (pol)
+        analysis=TextBlob(l).sentiment
+        t=analysis.polarity
+        pol.append(t)
     df['sentiment']=pol
-
-    f_list=df["sentiment"].to_list()
-    pol=list()
-    for l in f_list:
+    pol2=list()
+    for l in pol:
         if(l>0):
-            pol.append("Positive")
+            pol2.append("Positive")
         elif(l<0):
-            pol.append("Negative")
+            pol2.append("Negative")
         else:
-            pol.append("Neutral")
-        #print (pol)
-    df['roundoff']=pol
-
+            pol2.append("Neutral")
+    df['roundoff']=pol2
     df=df[df.sentiment != 0]
     return df

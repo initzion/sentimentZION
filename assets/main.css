@@ -25,6 +25,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
 	line-height: 1;
+	background-color: #282828;
 }
 
 ol, ul {
@@ -172,7 +173,7 @@ input, select, textarea {
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		color: #3e3e3e;
+		color: #ffffff;
 		margin: 0 0 0.75em 0;
 	}
 
@@ -431,7 +432,7 @@ input, select, textarea {
 /* Nav */
 
 	#nav {
-		background-color: #282828;
+		background-color: #000000;
 		text-align: right;
 		position: fixed;
 		left: 0;
@@ -529,6 +530,7 @@ input, select, textarea {
 
 			body {
 				font-size: 11pt;
+				background-color: #282828;
 			}
 
 			input, textarea, select {

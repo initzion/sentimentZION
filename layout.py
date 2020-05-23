@@ -7,7 +7,7 @@ html_layout = '''<!DOCTYPE html>
                             {%css%}
                             <link rel="stylesheet" href="assets/main.css">
                         </head>
-                        <body class="dash-template">
+                        <body class="dash-template" >
                             <header>
                              <nav id="nav">
         	<b><a href="home">SentimentZION</a></b>
