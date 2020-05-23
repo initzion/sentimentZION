@@ -262,29 +262,46 @@ app.layout = html.Div([
     ])
 ])
 
-@app.callback(Output("y-graph1","figure"),
-    [Input('ysubmit-val', 'n_clicks')],
-    [State("yquery-input","value")])
+@app.callback(
+    [dash.dependencies.Output("y-graph1","figure"),
+    dash.dependencies.Output("y-graph2","figure"),
+    dash.dependencies.Output("y-graph3","figure")],
+    [dash.dependencies.Input('ysubmit-val', 'n_clicks')],
+    [dash.dependencies.State("yquery-input","value")])
 def update_fig(n_clicks,input_value):
     videoid_list=search_vidid(begin_date, end_date, input_value)
     ansdf=all_cmt(videoid_list)
     ansdf = analyse_sentiment(ansdf,"comments")
     ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
     ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
-
+    #yaha tkk toh bss dataframe creation hai jo tere paas hai
     data=[]
-    trace_close = go.Scatter(x = list(ansdf.index),
+    trace_close = go.Scatter(x = list(ansdf.Date),
                          y=list(ansdf.sentiment),
                          name="Close",
                          line=dict(color="#ff3333"))
     data.append(trace_close)
-    layout = {"title": input_value }
-    return{
-        "data":data,
-        "layout":layout
-        }
+    figure = go.Figure(data)
 
+    data3=[]
+    trace_close3 = go.Scatter(x = list(ansdf.Date),
+                         y=list(ansdf.sentiment),
+                         mode='markers',
+                         name='markers',
+                         marker_color=ansdf['sentiment']
+                         )
+    data3.append(trace_close3)
+    figure3 = go.Figure(data3)
 
+    data4=[]
+    trace_close4 = go.Scatter(x = list(ansdf.Date),
+                         y=list(ansdf.roundoff),
+                         name="Close",
+                         line=dict(color="#ff3333"))
+    data4.append(trace_close4)
+    figure4 = go.Figure(data4)
+
+    return figure, figure3, figure4
 
 
 
