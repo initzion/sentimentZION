@@ -44,30 +44,6 @@ def mine_comments(id_list):
         comments=pd.DataFrame(comments,columns=['title','s_score','upvote_ratio','comments','c_score','c_date'])
         return comments
 
-
-
-
-
-
-
-
-
-
-
-
-#def f_csv(comments):
-#    f=comments.to_csv('comments.csv',index=True)
-#    return f
-
-
-#def join_frames(posts,comments):
-#        posts.append([post.title, post.score, post.id, post.subreddit, post.url, post.num_comments, post.selftext, post.created])
-#    posts = pd.DataFrame(posts,columns=['title', 'score', 'id', 'subreddit', 'url', 'num_comments', 'body', 'created'])
-   
-#        comments.append([submission.title,comment.subreddit,comment.submission,comment.body,comment.score,submission.upvote_ratio])
-#   comments=pd.DataFrame(comments,columns=['title','subreddit','submission','comments','score','upvote_ratio'])
-   
-    
     
     
     
