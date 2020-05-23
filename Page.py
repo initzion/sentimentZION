@@ -136,9 +136,33 @@ app = dash.Dash(__name__)
 
 # fig = dict (data=data, layout=layout)
 
+
+
+def createndf(df):
+    f_list=df["sentiment"].to_list()
+    pol=list()
+    p=0
+    n=0
+    nu=0
+    for l in f_list:
+        if(l>0):
+            p+=1
+        elif(l<0):
+            n+=1
+        else:
+            nu+=1
+        #print (pol)
+    pol.append(p)
+    pol.append(n)
+    pol.append(nu)
+    ndf=pd.DataFrame()
+    pl=["positive","negative","neutral"]
+    ndf['label']=pl
+    ndf['values']=pol
+    return ndf
+
+
 app.index_string = html_layout
-
-
 
 tabs_styles = {
     'height': '44px'
@@ -274,6 +298,7 @@ def update_fig(n_clicks,input_value):
     ansdf = analyse_sentiment(ansdf,"comments")
     ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
     ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
+    ndf=createndf(ansdf)
     #yaha tkk toh bss dataframe creation hai jo tere paas hai
     data=[]
     trace_close = go.Scatter(x = list(ansdf.Date),
@@ -294,10 +319,9 @@ def update_fig(n_clicks,input_value):
     figure3 = go.Figure(data3)
 
     data4=[]
-    trace_close4 = go.Scatter(x = list(ansdf.Date),
-                         y=list(ansdf.roundoff),
-                         name="Close",
-                         line=dict(color="#ff3333"))
+    trace_close4 = go.Pie(labels = list(ansdf.roundoff),
+                         name="Pie"
+                         )
     data4.append(trace_close4)
     figure4 = go.Figure(data4)
 
