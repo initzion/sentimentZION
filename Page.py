@@ -6,6 +6,12 @@ from dash.dependencies import Output,Input,State
 import plotly.graph_objs as go
 from layout import html_layout
 
+
+from redditScraping import top_posts
+from redditScraping import to_id_list
+from redditScraping import mine_comments
+
+
 import datetime as dt
 import pandas as pd
 
