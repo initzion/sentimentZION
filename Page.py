@@ -19,7 +19,9 @@ from Youtube import search_vidid,all_cmt
 from Senti import analyse_sentiment
 
 
-
+from Reddit import top_posts
+from Reddit import to_id_list
+from Reddit import mine_comments
 
 
 
@@ -165,7 +167,7 @@ app.layout = html.Div([
     dcc.Tabs([
         dcc.Tab(label='Home', value='tab-0', style=tab_style, selected_style=tab_selected_style, children=[
             html.P(""),
-            html.H3("Enter the term you want to analyse")
+            html.H3("Welcome to SentiomentZION ")
         ]),
         dcc.Tab(label='YouTube', value='tab-1', style=tab_style, selected_style=tab_selected_style, children=[
             html.Div([
@@ -174,50 +176,95 @@ app.layout = html.Div([
                 html.H3("Enter the term you want to analyse"),
                 html.Div([
                     dcc.Input(
-                        id = "query-input",
+                        id = "yquery-input",
                         placeholder = "Enter the query you want to search",
                         type = "text",
                         value = "Donald Trump"
                     ),
 
-                   html.Button('Submit', id='submit-val', n_clicks=0),
+                   html.Button('Submit', id='ysubmit-val', n_clicks=0),
                 ]),
                 html.Div(
-                    dcc.Graph(id="line-graph",)
+                    dcc.Graph(id="y-graph1",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="y-graph2",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="y-graph3",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="y-graph4",)
                     )
 
             ])
         ]),
         dcc.Tab(label='Twitter', value='tab-2', style=tab_style, selected_style=tab_selected_style, children=[
-            dcc.Graph(
-                figure={
-                    'data': [
-                        {'x': [1, 2, 3], 'y': [1, 4, 1],
-                            'type': 'bar', 'name': 'SF'},
-                        {'x': [1, 2, 3], 'y': [1, 2, 3],
-                         'type': 'bar', 'name': u'Montréal'},
-                    ]
-                }
-            )
+            html.Div([
+                #html.Div(html.H1(children="Team Zion")),
+                html.P(""),
+                html.H3("Enter the term you want to analyse"),
+                html.Div([
+                    dcc.Input(
+                        id = "tquery-input",
+                        placeholder = "Enter the query you want to search",
+                        type = "text",
+                        value = "Donald Trump"
+                    ),
+
+                   html.Button('Submit', id='tsubmit-val', n_clicks=0),
+                ]),
+                html.Div(
+                    dcc.Graph(id="t-graph1",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="t-graph2",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="t-graph3",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="t-graph4",)
+                    )
+
+            ])
         ]),
         dcc.Tab(label='Reddit', value='tab-3', style=tab_style, selected_style=tab_selected_style, children=[
-            dcc.Graph(
-                figure={
-                    'data': [
-                        {'x': [1, 2, 3], 'y': [2, 4, 3],
-                            'type': 'bar', 'name': 'SF'},
-                        {'x': [1, 2, 3], 'y': [5, 4, 3],
-                         'type': 'bar', 'name': u'Montréal'},
-                    ]
-                }
-            )
+            html.Div([
+                #html.Div(html.H1(children="Team Zion")),
+                html.P(""),
+                html.H3("Enter the term you want to analyse"),
+                html.Div([
+                    dcc.Input(
+                        id = "rquery-input",
+                        placeholder = "Enter the query you want to search",
+                        type = "text",
+                        value = "Donald Trump"
+                    ),
+
+                   html.Button('Submit', id='rsubmit-val', n_clicks=0),
+                ]),
+                html.Div(
+                    dcc.Graph(id="r-graph1",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="r-graph2",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="r-graph3",)
+                    ),
+                html.Div(
+                    dcc.Graph(id="r-graph4",)
+                    )
+
+            ])
         ]),
     ])
 ])
 
-@app.callback(Output("line-graph","figure"),
-    [Input('submit-val', 'n_clicks')],
-    [State("query-input","value")])
+@app.callback(Output("y-graph1","figure"),
+    [Input('ysubmit-val', 'n_clicks')],
+    [State("yquery-input","value")])
 def update_fig(n_clicks,input_value):
     videoid_list=search_vidid(begin_date, end_date, input_value)
     ansdf=all_cmt(videoid_list)
