@@ -5,7 +5,7 @@ html_layout = '''<!DOCTYPE html>
                             <title>{%title%}</title>
                             {%favicon%}
                             {%css%}
-                            <link rel="stylesheet" href="{{url_for('static', filename='assets/main.css')}}" />
+                            <link rel="stylesheet" href="assets/main.css">
                         </head>
                         <body class="dash-template">
                             <header>

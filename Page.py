@@ -163,6 +163,10 @@ tab_selected_style = {
 
 app.layout = html.Div([
     dcc.Tabs([
+        dcc.Tab(label='Home', value='tab-0', style=tab_style, selected_style=tab_selected_style, children=[
+            html.P(""),
+            html.H3("Enter the term you want to analyse")
+        ]),
         dcc.Tab(label='YouTube', value='tab-1', style=tab_style, selected_style=tab_selected_style, children=[
             html.Div([
                 #html.Div(html.H1(children="Team Zion")),
