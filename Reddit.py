@@ -42,15 +42,4 @@ def mine_comments(id_list):
     except:
         comments.append(["Null","0","0","Null","0","0"])
         comments=pd.DataFrame(comments,columns=['title','s_score','upvote_ratio','comments','c_score','c_date'])
-        return comments
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        return comments    
