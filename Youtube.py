@@ -9,8 +9,14 @@ global yt_vid_comments
 yt_vid_comments = []
 
 
+<<<<<<< HEAD
 DEVELOPER_KEY = "AIzaSyAPTz2p2gomu_DNpnkc2pIzn57BMmJXC2o" 
 
+=======
+#DEVELOPER_KEY = "AIzaSyCD1uVX77Olr25IRMAU0EhlxKJWAqvaZjg" 
+#DEVELOPER_KEY = "AIzaSyBFDVOO36czsYqj0fOWB_5SqKSKJizCBfY" 
+DEVELOPER_KEY = "AIzaSyDlYMAr75KG0XvYaaXDGMoN-rt1Kl2B1QU" 
+>>>>>>> 18164fee23023b1e5189ad67cbb61b4d0031b6bf
 YOUTUBE_API_SERVICE_NAME = "youtube"
 
 YOUTUBE_API_VERSION = "v3"

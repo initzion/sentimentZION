@@ -298,18 +298,22 @@ def update_fig(n_clicks,input_value):
     ansdf = analyse_sentiment(ansdf,"comments")
     ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
     ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
+<<<<<<< HEAD
     ndf=createndf(ansdf)
+=======
+    ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].sum()
+>>>>>>> 18164fee23023b1e5189ad67cbb61b4d0031b6bf
     #yaha tkk toh bss dataframe creation hai jo tere paas hai
     data=[]
-    trace_close = go.Scatter(x = list(ansdf.Date),
-                         y=list(ansdf.sentiment),
+    trace_close = go.Scatter(x = list(ansdf2.Date),
+                         y=list(ansdf2.sentiment),
                          name="Close",
                          line=dict(color="#ff3333"))
     data.append(trace_close)
     figure = go.Figure(data)
 
     data3=[]
-    trace_close3 = go.Scatter(x = list(ansdf.Date),
+    trace_close3 = go.Scatter(x = list(ansdf.CommentPublishDate),
                          y=list(ansdf.sentiment),
                          mode='markers',
                          name='markers',
