@@ -1,4 +1,4 @@
-## sentimentZION
+:rocket: ## sentimentZION :rocket:
 --by initZION
 
 ![Python](https://img.shields.io/badge/Python-^3.8-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
