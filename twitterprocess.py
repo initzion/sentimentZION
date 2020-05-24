@@ -35,7 +35,7 @@ def top_results(ipstr):
 #     user_info = query_user_info(user=twitter_user)
 #     twitter_user_data = {}
 #     twitter_user_data["user"] = user_info.user
-#     twitter_user_data["location"] = user_info.location
+#     twitter_user_data["location"] = user_info.location 
 #     return twitter_user_data
 
 # def get_user_info(screen_name):
