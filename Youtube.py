@@ -10,7 +10,7 @@ yt_vid_comments = []
 
 
 
-DEVELOPER_KEY = "AIzaSyAPTz2p2gomu_DNpnkc2pIzn57BMmJXC2o"
+DEVELOPER_KEY = "AIzaSyDCBVQSXeJgTqu7ZgTd7kHSpPGP2sCdScY"
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 

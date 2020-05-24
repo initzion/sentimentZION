@@ -16,7 +16,7 @@ yt_vid_comments = []
 
 
 from Youtube import search_vidid,all_cmt
-from Senti import analyse_sentiment, pretty_txt
+from Senti import analyse_sentiment, pretty_txt, analyse_sentimentwt
 
 
 from Reddit import top_posts
@@ -310,6 +310,7 @@ def update_fig(n_clicks,input_value):
     videoid_list=search_vidid(begin_date, end_date, input_value)
     ansdf=all_cmt(videoid_list)
     ansdf = analyse_sentiment(ansdf,"comments")
+    #answt = analyse_sentimentwt(ansdf,"comments")
     ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
     ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
     ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].sum()

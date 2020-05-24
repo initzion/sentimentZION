@@ -3,6 +3,8 @@ html_layout = '''<!DOCTYPE html>
                         <head>
                             {%metas%}
                             <title>{%title%}</title>
+                            <link rel = "icon" href =  "images/circlelogo.png"
+			                         type = "image/x-icon">
                             {%favicon%}
                             {%css%}
                             <link rel="stylesheet" href="assets/main.css">
@@ -15,7 +17,7 @@ html_layout = '''<!DOCTYPE html>
             <ul class="container">
 <c>
 
-      <li><a href="https://utkarshbrajnil.github.io/">About Us</a></li>
+      <li><a href="https://initzion.github.io/" , target="_blank">About Us</a></li>
 </c>
             </ul>
 
