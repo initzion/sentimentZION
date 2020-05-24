@@ -29,7 +29,7 @@ googleapis-common-protos==1.51.0
 googletrans==2.4.0
 googletranslate==2.1.2
 gunicorn==19.9.0
-httplib2==0.17.3
+httplib2==0.18.0
 ibm-cloud-sdk-core==1.5.1
 ibm-watson==4.4.1
 idna==2.9
