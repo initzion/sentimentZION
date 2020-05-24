@@ -1,5 +1,5 @@
 ## :rocket:  sentimentZION :rocket:
-             --by initZION
+-- a project by initZION 2020.
 
 ![Python](https://img.shields.io/badge/Python-^3.8-blue.svg?logo=python&longCache=true&logoColor=white&colorB=5e81ac&style=flat-square&colorA=4c566a)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-blue.svg?longCache=true&logo=flask&style=flat-square&logoColor=white&colorB=5e81ac&colorA=4c566a)
@@ -13,7 +13,10 @@
 We at Sentiment ZION are focused to paint the true picture of the world for you. The information that is provided is mined from social media and analyzed by us, we provided an overview of data from websites like Youtube, Twitter, and Reddit about your topic for a relevant timeframe.
 This data is presented in a visual format that provides higher readability and ease of consumption.
 
-## Installation
+![SentimentZION Thumbnail](https://github.com/initzion/sentimentZION/blob/master/assets/img/thumbnail.jpeg)
+(https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
+
+## :heavy_check_mark: Installation :heavy_check_mark:
 
 **Installation via `requirements.txt`**:
 
