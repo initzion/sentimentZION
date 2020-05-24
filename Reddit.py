@@ -13,7 +13,7 @@ reddit = praw.Reddit(client_id='O819Gp7QK8_o5A', client_secret='4pC2Pu3eTJWxdSKf
 def top_posts(topic):
     posts=[]
     try:
-        f_subreddit = reddit.subreddit(topic)
+        f_subreddit = reddit.subreddit(topic) 
         for post in f_subreddit.hot(limit=5):
             posts.append([post.title, post.score, post.id, post.num_comments])
         posts = pd.DataFrame(posts,columns=['title', 'score', 'id', 'num_comments'])
