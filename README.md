@@ -14,7 +14,7 @@ We at Sentiment ZION are focused to paint the true picture of the world for you.
 This data is presented in a visual format that provides higher readability and ease of consumption.
 
 ![SentimentZION Thumbnail](https://github.com/initzion/sentimentZION/blob/master/assets/img/thumbnail.jpeg)
-(https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
+ https://www.youtube.com/watch?v=kSfAQajR1Ms&t=7s
 
 ## :heavy_check_mark: Installation :heavy_check_mark:
 
