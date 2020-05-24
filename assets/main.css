@@ -225,6 +225,7 @@ input, select, textarea {
 
 	p, ul, ol, dl, table {
 		margin-bottom: 2em;
+		color: #ffffff;
 	}
 
 	header {
@@ -243,6 +244,16 @@ input, select, textarea {
 		footer > p {
 			font-size: 1.25em;
 		}
+
+/*logo*/
+.logo{
+	width: 50px;
+	height: 45px;
+	top: 0em;
+}
+
+
+
 
 /* Container */
 

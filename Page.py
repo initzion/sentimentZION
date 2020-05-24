@@ -16,7 +16,7 @@ yt_vid_comments = []
 
 
 from Youtube import search_vidid,all_cmt
-from Senti import analyse_sentiment
+from Senti import analyse_sentiment, pretty_txt
 
 
 from Reddit import top_posts
@@ -171,10 +171,23 @@ tab_selected_style = {
 
 
 app.layout = html.Div([
-    dcc.Tabs([
-        dcc.Tab(label='Home', value='tab-0', style=tab_style, selected_style=tab_selected_style, children=[
+    dcc.Tabs(value='tab-0',children=
+    [dcc.Tab(label='Home', value='tab-0', style=tab_style, selected_style=tab_selected_style, children=[
             html.P(""),
-            html.H3("Welcome to SentiomentZION ")
+            html.H3("SentimentZION "),
+            html.Div([html.H4("Know what the world thinks!"),
+                    html.P("We at SentimentZION are focused to paint the true picture of the world for you. The information that is provided is mined from social media and analyzed by us, we provided an overview of data from websites like Youtube, Twitter, and Reddit about your topic for a relevant timeframe. This data is presented in a visual format that provides higher readability and ease of consumption."),
+                    html.H4("So what am I seeing?"),
+                    html.P("-- Youtube : 100 most relevant comments each from across 10 most popular videos, "),
+                    html.P("for instance, 100x10=1000 comments !"),
+                    html.P("-- Twitter: around 1000 most relevant tweets!"),
+                    html.P("-- Reddit : 150 most relevant comments each from across 5 most active subreddits,  "),
+                    html.P("for instance, 150x5=750 comments !"),
+                    html.H4("What is the significance?"),
+                    html.P("Most social networks project the views of the most vocal but a minority of users on their platforms, however, the majority of the users' opinion is not taken into consideration. We plan on providing a non-biased overview by mining each comment from various social media sites which returns a score on a scale of -1 to 1, which signifies the sentiments of people where '-1' being most negative sentiment i.e. people are unsatisfied with it and '+1' being most positive sentiment i.e. people are satisfied."),
+                    html.P("Note: This data is changing every second and hence the results take time to analyze and convert this data into a consumable format so a little Patience will be appreciated")
+                    ])
+
         ]),
         dcc.Tab(label='YouTube', value='tab-1', style=tab_style, selected_style=tab_selected_style, children=[
             html.Div([
@@ -186,7 +199,7 @@ app.layout = html.Div([
                         id = "yquery-input",
                         placeholder = "Enter the query you want to search",
                         type = "text",
-                        value = "Donald Trump",
+                        value = "Covid19",
                         style={"margin-right": "15px"}
                     ),
                    html.Button('Submit', id='ysubmit-val', n_clicks=0),
@@ -220,7 +233,7 @@ app.layout = html.Div([
                         id = "tquery-input",
                         placeholder = "Enter the query you want to search",
                         type = "text",
-                        value = "Donald Trump",
+                        value = "Covid19",
                         style={"margin-right": "15px"}
                     ),
 
@@ -282,6 +295,9 @@ app.layout = html.Div([
         ]),
     ])
 ])
+
+
+
 
 @app.callback(
     [dash.dependencies.Output("y-graph1","figure"),
@@ -446,7 +462,7 @@ def update_fig(n_clicks,input_value):
     [dash.dependencies.Input('rsubmit-val', 'n_clicks')],
     [dash.dependencies.State("rquery-input","value")])
 def update_fig(n_clicks,input_value):
-    input_value = input_value.replace(" ", "")
+    input_value = pretty_txt(input_value)
     df1=top_posts(input_value)
     list1=to_id_list(df1)
     comment=mine_comments(list1)

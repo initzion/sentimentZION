@@ -10,7 +10,15 @@ html_layout = '''<!DOCTYPE html>
                         <body class="dash-template" >
                             <header>
                              <nav id="nav">
-        	<b><a href="home">SentimentZION</a></b>
+        	<b><li><img src="/assets/img/circlelogo.png" class='logo' /></li>
+            <li><a href="/" style = "position:absolute; left:50px; top:0px;" >SentimentZION</a></li></b>
+            <ul class="container">
+<c>
+
+      <li><a href="https://utkarshbrajnil.github.io/">About Us</a></li>
+</c>
+            </ul>
+
 
 			</nav>
                             </div>

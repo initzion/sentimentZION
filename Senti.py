@@ -20,3 +20,9 @@ def analyse_sentiment(df , term):
     df['roundoff']=pol2
     df=df[df.sentiment != 0]
     return df
+
+def pretty_txt(input_value):
+    input_value = input_value.replace(" ", "")
+    input_value = input_value.replace("-", "")
+    input_value = input_value.replace("[^a-zA-Z#]", " ")
+    return (input_value)
