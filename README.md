@@ -18,6 +18,7 @@ This data is presented in a visual format that provides higher readability and e
 
 ## :heavy_check_mark: Installation :heavy_check_mark:
 
+
 **Installation via `requirements.txt`**:
 
 ```shell
