@@ -15,6 +15,12 @@ This data is presented in a visual format that provides higher readability and e
 
 ![SentimentZION Thumbnail](https://github.com/initzion/sentimentZION/blob/master/assets/img/thumbnail.jpeg)
  https://www.youtube.com/watch?v=kSfAQajR1Ms&t=7s
+ 
+ ## :pencil: Note
+ Edit 2 files "youtube.py" and "senti.py"
+ Enter your own api-key if you dont have one visit:
+ for ibm: https://developer.ibm.com/technologies/iot/tutorials/iot-generate-apikey-apitoken/
+ for youtube: https://developers.google.com/youtube/v3/getting-started
 
 ## :heavy_check_mark: Installation :heavy_check_mark:
 
