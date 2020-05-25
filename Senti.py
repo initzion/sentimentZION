@@ -5,13 +5,13 @@ from textblob import TextBlob
 import pandas as pd
 
 def analyse_sentimentwt(df , term):
-    authenticator = IAMAuthenticator('rxAhb2YFXLHaq0xQsxf6VugsICmIGKB-KVpKOqRdoCHw')
+    authenticator = IAMAuthenticator('api-key')
     language_translator = LanguageTranslatorV3(
-    version='2020-05-16',
+    version='date',
     authenticator=authenticator
     )
 
-    language_translator.set_service_url('https://api.au-syd.language-translator.watson.cloud.ibm.com/instances/3960469f-58d1-4cee-a095-df28e339235b')
+    language_translator.set_service_url('url')
 
     
     df[term].replace(['[deleted]','[removed]'],[1.1,1.1],inplace=True)
