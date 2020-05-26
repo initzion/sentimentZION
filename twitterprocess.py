@@ -3,7 +3,6 @@ import pandas as pd
 from twitterscraper import query_tweets,query_user_info
 from Senti import analyse_sentiment
 
-
 #TWITTER MAIN FUNCTION FOR MINING
 
 def top_results(ipstr):
