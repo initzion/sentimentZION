@@ -1,143 +1,18 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.express as px
-from dash.dependencies import Output,Input,State
-import plotly.graph_objs as go
 from layout import html_layout
 
-import datetime as dt
-import pandas as pd
+from twittergraph import TWT_graph
+from youtubegraph import YT_graph
+from redditgraph import REDDIT_graph
 
-from twitterprocess import top_results
 
 global yt_vid_comments
 yt_vid_comments = []
 
 
-from Youtube import search_vidid,all_cmt
-from Senti import analyse_sentiment, pretty_txt, analyse_sentimentwt
-
-
-from Reddit import top_posts
-from Reddit import to_id_list
-from Reddit import mine_comments
-
-
-
-#Ye Wala sbb Change karna hai...
-
-# query="Donald Trump"
-days = dt.timedelta(days=10)
-end_date = dt.date.today()
-begin_date = end_date - days
-# videoid_list=search_vidid(begin_date, end_date, query)
-
-#ye wala aapna reddit ke liye hai
-#ansdf=redditp(query)
-
-# ansdf=all_cmt(videoid_list)
-# ansdf = analyse_sentiment(ansdf,"comments")
-# ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
-# ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
-#ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].sum()
-
-#yaha tkk change karna hai
-
-
-
-
-
 app = dash.Dash(__name__)
-# app.layout = html.Div(
-#     children=[
-#         html.Div(
-#             dcc.Input(
-#                 id = "query-input",
-#                 placeholder = "Search",
-#                 type = "text",
-#                 value = "Narendra Modi"
-#         )
-#     ),
-
-#         html.Div(
-#             dcc.Graph(
-#                 id='line-graph',
-#                 config={'displayModeBar': True},
-#                 animate= True,
-#                 figure=px.line(ansdf2,
-#                                x='Date',
-#                                y='sentiment',
-#                                title='Line Graph analysis',
-#                                ),
-#                 style={'padding': 0, 'height':600}
-#             )
-#         ),
-
-#         html.Div(
-#             dcc.Graph(
-#                 id='bar-graph',
-#                 figure={
-#                     'data': [
-#                         {
-#                             'x': ansdf['CommentPublishDate'],
-#                             'y': ansdf['sentiment'],
-#                             'name': 'Bar analysis',
-#                             'type': 'bar'
-#                         }
-#                      ],
-#                     'layout': {
-#                             'title': 'Bar analysis.',
-#                             'height': 600,
-#                             'padding': 150
-#                     }
-#                 }),
-#             ),
-
-#         html.Div(
-#             dcc.Graph(
-#                 id='scatter-graph',
-#                 config={'displayModeBar': True},
-#                 animate= True,
-#                 figure=px.scatter(ansdf,
-#                                x='CommentPublishDate',
-#                                y='sentiment',
-#                                title='Scatter analysis',
-#                                ),
-#                 style={'padding': 25, 'height':600}
-#             )
-#         ),
-
-#         html.Div(
-#             dcc.Graph(
-#                 id='pie-graph',
-#                 config={'displayModeBar': True},
-#                 animate= True,
-#                 figure=px.pie(ansdf,
-#                                values='sentiment',
-#                                names='RoundPolarity',
-#                                color_discrete_sequence=px.colors.sequential.RdBu,
-#                                title='Pie analysis',
-#                                ),
-#                 style={'padding': 25, 'height':800}
-#             )
-#         ),
-
-#         ],
-
-#     id='dash-container',
-
-# )
-
-
-# data =  [trace_close]
-# layout = dict(title="Youtube Sentiment Chart",
-#               showLegend=False)
-
-# fig = dict (data=data, layout=layout)
-
-
-
 
 app.index_string = html_layout
 
@@ -167,7 +42,7 @@ tab_selected_style = {
 
 
 
-
+#LAYOUT OF THE MAIN DASH APP
 
 
 app.layout = html.Div([
@@ -297,7 +172,7 @@ app.layout = html.Div([
 ])
 
 
-
+#FUNCTION TO UPDATE THE GRAPHS ONPRESS OF SUBMIT BUTTON
 
 @app.callback(
     [dash.dependencies.Output("y-graph1","figure"),
@@ -306,75 +181,12 @@ app.layout = html.Div([
     dash.dependencies.Output("y-graph4","figure")],
     [dash.dependencies.Input('ysubmit-val', 'n_clicks')],
     [dash.dependencies.State("yquery-input","value")])
-def update_fig(n_clicks,input_value):
-    videoid_list=search_vidid(begin_date, end_date, input_value)
-    ansdf=all_cmt(videoid_list)
-    ansdf = analyse_sentiment(ansdf,"comments")
-    #answt = analyse_sentimentwt(ansdf,"comments")
-    ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
-    ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
-    ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].sum()
-    #yaha tkk toh bss dataframe creation hai jo tere paas hai
-    data=[]
-    trace_close = go.Scatter(x = list(ansdf2.Date),
-                         y=list(ansdf2.sentiment),
-
-                         name="Close"
-                         )
-    data.append(trace_close)
-    figure1 = go.Figure(data)
-    figure1.update_layout(
-    title="Date-Wise Cumulative Sentiment Score Line Plot",
-    xaxis_title="Date",
-    yaxis_title="Cumulative Score",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Scatter(x = list(ansdf.CommentPublishDate),
-                         y=list(ansdf.sentiment),
-                         mode='markers',
-                         name='markers',
-                         marker_color=ansdf['sentiment']
-                         )
-
-    data.append(trace_close)
-    figure2 = go.Figure(data)
-    figure2.update_layout(
-    title="Date-Wise Sentiment Score Scatter Plot [negative(-1) to positive(+1)]",
-    xaxis_title="Date",
-    yaxis_title="(-ve) Sentiment Score (+ve)",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Box(x = list(ansdf.Date),
-                         y=list(ansdf.sentiment),
-                         name="Close",
-                         line=dict(color="#ff3333"))
-    data.append(trace_close)
-    figure3 = go.Figure(data)
-    figure3.update_layout(
-    title="Date-Wise Sentiment Score Box Plot [negative(-1) to positive(+1)]",
-    xaxis_title="Date",
-    yaxis_title="(-ve) Sentiment Score (+ve)",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Pie(labels=list(ansdf.roundoff),
-                         name="Close"
-                         )
-    data.append(trace_close)
-    figure4 = go.Figure(data)
-    figure4.update_layout(
-    title="Pie-Chart",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
+def update_figyt(n_clicks,input_value):
+    figure = YT_graph(n_clicks,input_value)
+    figure1 = figure[0]
+    figure2 = figure[1]
+    figure3 = figure[2]
+    figure4 = figure[3]
 
     return figure1, figure2, figure3, figure4
 
@@ -385,72 +197,12 @@ def update_fig(n_clicks,input_value):
     dash.dependencies.Output("t-graph4","figure")],
     [dash.dependencies.Input('tsubmit-val', 'n_clicks')],
     [dash.dependencies.State("tquery-input","value")])
-def update_fig(n_clicks,input_value):
-    andf = top_results(input_value)
-    andf = analyse_sentiment(andf,"text")
-    andf['Date'] = andf.apply(lambda row: str(row.timestamp).split(" ", 1)[0], axis = 1)
-    andf['RoundPolarity'] = round(andf['sentiment'],1)
-    andf2 = andf.groupby('Date', as_index=False)[['sentiment']].sum()
-    # ansdf3 = ansdf.groupby('RoundPolarity', as_index=False)[['Likes']].sum()
-
-    data=[]
-    trace_close = go.Scatter(x = list(andf2.Date),
-                         y=list(andf2.sentiment),
-                         name="Close",
-                         line=dict(color="#ff3333"))
-    data.append(trace_close)
-    figure1 = go.Figure(data)
-    figure1.update_layout(
-    title="Date-Wise Cumulative Sentiment Score Line Plot",
-    xaxis_title="Date",
-    yaxis_title="Cumulative Score",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Scatter(x = list(andf.timestamp),
-                          y=list(andf.sentiment),
-                          mode='markers',
-                          name="markers",
-                          marker_color=andf['sentiment'])
-    data.append(trace_close)
-    figure2 = go.Figure(data)
-    figure2.update_layout(
-    title="Date-Wise Sentiment Score Scatter Plot [negative(-1) to positive(+1)]",
-    xaxis_title="Date",
-    yaxis_title="(-ve) Sentiment Score (+ve)",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Box(x = list(andf.Date),
-                         y=list(andf.sentiment),
-                         name="Close",
-                         line=dict(color="#ff3333"))
-    data.append(trace_close)
-    figure3 = go.Figure(data)
-    figure3.update_layout(
-    title="Date-Wise Sentiment Score Box Plot [negative(-1) to positive(+1)]",
-    xaxis_title="Date",
-    yaxis_title="(-ve) Sentiment Score (+ve)",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Pie(labels=list(andf.roundoff),
-                         name="Close"
-                         )
-    data.append(trace_close)
-    figure4 = go.Figure(data)
-    figure4.update_layout(
-    title="Pie-Chart",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
+def update_figtwt(n_clicks,input_value):
+    figure = TWT_graph(n_clicks,input_value)
+    figure1 = figure[0]
+    figure2 = figure[1]
+    figure3 = figure[2]
+    figure4 = figure[3]
 
     return figure1, figure2, figure3, figure4
 
@@ -462,72 +214,13 @@ def update_fig(n_clicks,input_value):
     dash.dependencies.Output("r-graph4","figure")],
     [dash.dependencies.Input('rsubmit-val', 'n_clicks')],
     [dash.dependencies.State("rquery-input","value")])
-def update_fig(n_clicks,input_value):
-    input_value = pretty_txt(input_value)
-    df1=top_posts(input_value)
-    list1=to_id_list(df1)
-    comment=mine_comments(list1)
-    comment=analyse_sentiment(comment,"comments")
-    comment['Date'] = comment.apply(lambda row: str(row.c_date).split(" ", 1)[0], axis = 1)
-    comment2 = comment.groupby('Date', as_index=False)[['sentiment']].sum()
-    data=[]
-    trace_close = go.Scatter(x = list(comment2.Date),
-                         y=list(comment2.sentiment),
-                         mode='lines',
-                         name="Close",
-                         line=dict(color="#ff3333"))
-    data.append(trace_close)
-    figure1 = go.Figure(data)
-    figure1.update_layout(
-    title="Date-Wise Cumulative Sentiment Score Line Plot",
-    xaxis_title="Date",
-    yaxis_title="Cumulative Score",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
+def update_figreddit(n_clicks,input_value):
+    figure = REDDIT_graph(n_clicks,input_value)
+    figure1 = figure[0]
+    figure2 = figure[1]
+    figure3 = figure[2]
+    figure4 = figure[3]
 
-    data=[]
-    trace_close = go.Scatter(x = list(comment.c_date),
-                          y=list(comment.sentiment),
-                          mode='markers',
-                          name="markers",
-                          marker_color=comment['sentiment'])
-    data.append(trace_close)
-    figure2 = go.Figure(data)
-    figure2.update_layout(
-    title="Date-Wise Sentiment Score Scatter Plot [negative(-1) to positive(+1)]",
-    xaxis_title="Date",
-    yaxis_title="(-ve) Sentiment Score (+ve)",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Box(x = list(comment.Date),
-                         y=list(comment.sentiment),
-                         name="Close",
-                         line=dict(color="#ff3333"))
-    data.append(trace_close)
-    figure3 = go.Figure(data)
-    figure3.update_layout(
-    title="Date-Wise Sentiment Score Box Plot [negative(-1) to positive(+1)]",
-    xaxis_title="Date",
-    yaxis_title="(-ve) Sentiment Score (+ve)",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
-
-    data=[]
-    trace_close = go.Pie(labels=list(comment.roundoff),
-                         name="Close"
-                         )
-    data.append(trace_close)
-    figure4 = go.Figure(data)
-    figure4.update_layout(
-    title="Pie-Chart",
-    template='plotly_dark',
-    plot_bgcolor= 'rgba(0, 0, 0, 0)'
-    )
 
 
     return figure1, figure2, figure3, figure4

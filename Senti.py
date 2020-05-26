@@ -1,8 +1,9 @@
-import json
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from textblob import TextBlob
-import pandas as pd
+
+
+#ANALYSING SENTIMENT AND RATING THEM FROM -1 TO +1
 
 def analyse_sentimentwt(df , term):
     authenticator = IAMAuthenticator('api-key')

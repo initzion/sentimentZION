@@ -1,16 +1,17 @@
 from apiclient.discovery import build
 from rfc3339 import rfc3339
-# import datetime as dt
 import pandas as pd
-# import csv
+
 
 
 global yt_vid_comments
 yt_vid_comments = []
 
+#YOUTUBE MAIN FUNCTION FOR MINING
 
 
-DEVELOPER_KEY = "api-key"
+
+DEVELOPER_KEY = "AIzaSyCD1uVX77Olr25IRMAU0EhlxKJWAqvaZjg"
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 
