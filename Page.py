@@ -133,6 +133,7 @@ app.layout = html.Div([
 
             ])
         ]),
+     
         dcc.Tab(label='Reddit', value='tab-3', style=tab_style, selected_style=tab_selected_style, children=[
             html.Div([
                 #html.Div(html.H1(children="Team Zion")),
