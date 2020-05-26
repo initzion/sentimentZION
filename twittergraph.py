@@ -3,7 +3,6 @@ from twitterprocess import top_results
 from Senti import analyse_sentiment
 import plotly.graph_objs as go
 
-
 #FUNCTION TO PLOT TWITTER GRAPHS
 def TWT_graph(n_clicks,input_value):
     andf = top_results(input_value)
