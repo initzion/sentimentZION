@@ -3,7 +3,6 @@ from rfc3339 import rfc3339
 import pandas as pd
 
 
-
 global yt_vid_comments
 yt_vid_comments = []
 
