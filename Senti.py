@@ -5,6 +5,7 @@ from textblob import TextBlob
 
 #ANALYSING SENTIMENT AND RATING THEM FROM -1 TO +1
 
+
 def analyse_sentimentwt(df , term):
     authenticator = IAMAuthenticator('api-key')
     language_translator = LanguageTranslatorV3(
