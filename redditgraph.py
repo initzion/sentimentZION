@@ -7,6 +7,7 @@ import plotly.graph_objs as go
 from Senti import analyse_sentiment,pretty_txt
 #FUNCTION TO PLOT REDDIT GRAPH
 
+
 def REDDIT_graph(n_clicks,input_value):
     input_value = pretty_txt(input_value)
     df1=top_posts(input_value)
