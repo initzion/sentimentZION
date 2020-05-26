@@ -7,7 +7,6 @@ import pandas as pd
 import datetime as dt
 
 #FUNCTION TO PLOT YOUTUBE GRAPH
-
 days = dt.timedelta(days=10)
 end_date = dt.date.today()
 begin_date = end_date - days
