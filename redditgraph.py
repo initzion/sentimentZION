@@ -15,7 +15,7 @@ def REDDIT_graph(n_clicks,input_value):
     comment=mine_comments(list1)
     comment=analyse_sentiment(comment,"comments")
     comment['Date'] = comment.apply(lambda row: str(row.c_date).split(" ", 1)[0], axis = 1)
-    comment2 = comment.groupby('Date', as_index=False)[['sentiment']].sum()
+    comment2 = comment.groupby('Date', as_index=False)[['sentiment']].mean()
     data=[]
     trace_close = go.Scatter(x = list(comment2.Date),
                          y=list(comment2.sentiment),
@@ -25,9 +25,9 @@ def REDDIT_graph(n_clicks,input_value):
     data.append(trace_close)
     figure1 = go.Figure(data)
     figure1.update_layout(
-    title="Date-Wise Cumulative Sentiment Score Line Plot",
+    title="Date-Wise Mean Sentiment Score Line Plot",
     xaxis_title="Date",
-    yaxis_title="Cumulative Score",
+    yaxis_title="Mean Score",
     template='plotly_dark',
     plot_bgcolor= 'rgba(0, 0, 0, 0)'
     )

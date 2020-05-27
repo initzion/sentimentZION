@@ -22,7 +22,7 @@ def YT_graph(n_clicks,input_value):
     #answt = analyse_sentimentwt(ansdf,"comments")
     ansdf['Date'] = ansdf.apply(lambda row: str(row.CommentPublishDate).split("T", 1)[0], axis = 1)
     ansdf['RoundPolarity'] = round(ansdf['sentiment'],1)
-    ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].sum()
+    ansdf2 = ansdf.groupby('Date', as_index=False)[['sentiment']].mean()
     #yaha tkk toh bss dataframe creation hai jo tere paas hai
     data=[]
     trace_close = go.Scatter(x = list(ansdf2.Date),
@@ -33,9 +33,9 @@ def YT_graph(n_clicks,input_value):
     data.append(trace_close)
     figure1 = go.Figure(data)
     figure1.update_layout(
-    title="Date-Wise Cumulative Sentiment Score Line Plot",
+    title="Date-Wise Mean Sentiment Score Line Plot",
     xaxis_title="Date",
-    yaxis_title="Cumulative Score",
+    yaxis_title="Mean Score",
     template='plotly_dark',
     plot_bgcolor= 'rgba(0, 0, 0, 0)'
     )

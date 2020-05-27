@@ -10,7 +10,7 @@ def TWT_graph(n_clicks,input_value):
     andf = analyse_sentiment(andf,"text")
     andf['Date'] = andf.apply(lambda row: str(row.timestamp).split(" ", 1)[0], axis = 1)
     andf['RoundPolarity'] = round(andf['sentiment'],1)
-    andf2 = andf.groupby('Date', as_index=False)[['sentiment']].sum()
+    andf2 = andf.groupby('Date', as_index=False)[['sentiment']].mean()
     # ansdf3 = ansdf.groupby('RoundPolarity', as_index=False)[['Likes']].sum()
 
     data=[]
@@ -21,9 +21,9 @@ def TWT_graph(n_clicks,input_value):
     data.append(trace_close)
     figure1 = go.Figure(data)
     figure1.update_layout(
-    title="Date-Wise Cumulative Sentiment Score Line Plot",
+    title="Date-Wise Mean Sentiment Score Line Plot",
     xaxis_title="Date",
-    yaxis_title="Cumulative Score",
+    yaxis_title="Mean Score",
     template='plotly_dark',
     plot_bgcolor= 'rgba(0, 0, 0, 0)'
     )
